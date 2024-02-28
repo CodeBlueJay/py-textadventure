@@ -1,1 +1,1 @@
-Text Adventure made with python, by CodeBlueJay and our glorious leader hyunjun kim glory to the ccp 5234907242934710936781 lashings to codebluejay if he doesnt complete this project and earn us a 5 on the ap test within the span of the next 5 seconds
+Text Adventure made with python, by CodeBlueJay (Who did most of the work)
