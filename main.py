@@ -6,23 +6,23 @@ def show_map(player_location):
     map = [
         "___________________________________________________________________________________",
         "|                |   |               | |                       |                  |",
-        "|                |   |  .  Theater   | | . Office   ___________| .  North Gate    |",
-        "|       .        |   |_______________| |___________|         ____________         |",
+        "|                |   |     Theater   | |   Office   ___________|    North Gate    |",
+        "|                |   |_______________| |___________|         ____________         |",
         "|                |                                          |            |        |",
-        "|     300's      |                                          |   North    |        |",
-        "|   Building     |         .         Quad         .         |    Gym  .  |        |",
+        "|     300s       |                                          |   North    |        |",
+        "|   Building     |                   Quad                   |    Gym     |        |",
         "|                |                                          |____________|        |",
         "|                |              ______________________   ______         ______    |",
-        "|   .            |   _______   |                      | |  .   | ____  |  .   |   |",
+        "|                |   _______   |                      | |      | ____  |      |   |",
         "|________________|  |       |  |                      | | Girl ||    | | Boys |   |",
-        "|___________________|   .   |  |       500's          | |Locker||Pool| |Locker|   |",
+        "|___________________|       |  |       500s           | |Locker||Pool| |Locker|   |",
         "|                           |  |      Building        | | Room ||____| | Room |   |",
-        "|   .  400's Building       |  |                      | |______|   .   |______|   |",
-        "|___________________________|  |          .           |      ________             |",
-        "|                              |______________________|  .  | South  |    .       |",
-        "|    .                       .       ______________         |  Gym . |            |",
-        "|                                   |      .       |        |________|            |",
-        "|                                   |    900's     |                              |",
+        "|       400s Building       |  |                      | |______|       |______|   |",
+        "|___________________________|  |                      |      ________             |",
+        "|                              |______________________|     | South  |            |",
+        "|                                    ______________         |  Gym   |            |",
+        "|                                   |              |        |________|            |",
+        "|                                   |     900s     |                              |",
         "|                                   |   Building   |                              |",
         "|                                   |______________|                              |",
         "|_________________________________________________________________________________|"
@@ -50,7 +50,7 @@ def welcome_message():
     print(" \/  \/ \___|_|\___\___/|_| |_| |_|\___|  \__\___/    \_/\___/_/\_\\__| \_| |_/\__,_| \_/ \___|_| |_|\__|\__,_|_|  \___(_)\n")
 
 def start_game():
-    player_location = [2, 65]
+    player_location = [2, 79]
     welcome_message()
     print("You are a lone Troy Student, fighting to secure good grades and making your Asian parents proud.\n")
     print("Commands: " + str(commands) + '\n')
@@ -58,5 +58,21 @@ def start_game():
     print("You stand in front of the North Gym gate.")
     print("You have a map of the school")
     show_map(player_location)
+    print("Go 'west' to get in the school and start the game.")
+    command = input("> ")
+    if command == "west":
+        player_location = [2, 65]
+        show_map(player_location)
+    elif command == "map":
+        show_map(player_location)
+    elif command == "stats":
+        print("Grade: 100")
+        print("Attack: 10")
+        print("Defense: 10")
+        print("Speed: 10")
+
+def north_gate():
+    print("You are at the North Gate.")
+    print("You see the North Gym to the south. You can also go west to the quad.")
 
 start_game()
