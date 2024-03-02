@@ -145,6 +145,6 @@ def start_game():
 def north_gate():
     print("You are in the school, just inside the North Gate.")
     print("You turn and see the North Gym to the south. You can also continue west to the quad.")
-    # check_command(False, [0, 0], False, [0, 0], True, [0, 0], True, [2, 78], False, False, 0, 0)
+    check_command(False, [0, 0], False, [0, 0], True, [0, 0], True, [2, 78], False, False, 0, 0)
 
 start_game()

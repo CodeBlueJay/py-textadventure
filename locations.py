@@ -1,4 +1,4 @@
-player_location = [2, 79]
+player_location = [6, 27]
 
 def show_map():
     global player_location
@@ -44,4 +44,8 @@ show_map()
 
 ''' LOCATIONS
 Starting Pos (Outside North Gate) - [2, 79]
+Inside North Gate - [2, 65]
+Inside North Gym - [4, 66]
+East Quad - [6, 50]
+West Quad - [6, 27]
 '''
