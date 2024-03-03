@@ -8,45 +8,46 @@ percent = 0
 inventory = []
 player_location = [2, 79]
 
+game_map = [
+    "___________________________________________________________________________________",
+    "|                |   |               | |                       |                  |",
+    "|                |   |     Theater   | |   Office   ___________|    North Gate    |",
+    "|                |   |_______________| |___________|         ____________         |",
+    "|                |                                          |            |        |",
+    "|     300s       |                                          |   North    |        |",
+    "|   Building     |                   Quad                   |    Gym     |        |",
+    "|                |                                          |____________|        |",
+    "|                |              ______________________   ______         ______    |",
+    "|                |   _______   |                      | |      | ____  |      |   |",
+    "|________________|  |       |  |                      | | Girl ||    | | Boys |   |",
+    "|___________________|       |  |       500s           | |Locker||Pool| |Locker|   |",
+    "|                           |  |      Building        | | Room ||____| | Room |   |",
+    "|       400s Building       |  |                      | |______|       |______|   |",
+    "|___________________________|  |                      |      ________             |",
+    "|                              |______________________|     | South  |            |",
+    "|                                    ______________         |  Gym   |            |",
+    "|                                   |              |        |________|            |",
+    "|                                   |     900s     |                              |",
+    "|                                   |   Building   |                              |",
+    "|                                   |______________|                              |",
+    "|_________________________________________________________________________________|"
+]
+
 def show_map():
     global player_location
-    game_map = [
-        "___________________________________________________________________________________",
-        "|                |   |               | |                       |                  |",
-        "|                |   |     Theater   | |   Office   ___________|    North Gate    |",
-        "|                |   |_______________| |___________|         ____________         |",
-        "|                |                                          |            |        |",
-        "|     300s       |                                          |   North    |        |",
-        "|   Building     |                   Quad                   |    Gym     |        |",
-        "|                |                                          |____________|        |",
-        "|                |              ______________________   ______         ______    |",
-        "|                |   _______   |                      | |      | ____  |      |   |",
-        "|________________|  |       |  |                      | | Girl ||    | | Boys |   |",
-        "|___________________|       |  |       500s           | |Locker||Pool| |Locker|   |",
-        "|                           |  |      Building        | | Room ||____| | Room |   |",
-        "|       400s Building       |  |                      | |______|       |______|   |",
-        "|___________________________|  |                      |      ________             |",
-        "|                              |______________________|     | South  |            |",
-        "|                                    ______________         |  Gym   |            |",
-        "|                                   |              |        |________|            |",
-        "|                                   |     900s     |                              |",
-        "|                                   |   Building   |                              |",
-        "|                                   |______________|                              |",
-        "|_________________________________________________________________________________|"
-    ]
+    global game_map
 
-    # Convert the map to a list of lists
-    game_map = [list(line) for line in game_map]
+    new_game_map = [list(line) for line in game_map]
 
-    # Update the player's location
-    game_map[player_location[0]][player_location[1]] = '\033[31mP\033[0m'
+    for i in range(len(new_game_map)):
+        for j in range(len(new_game_map[i])):
+            if new_game_map[i][j] == '\033[31mP\033[0m':
+                new_game_map[i][j] = ' '
 
-    # Convert the map back to a list of strings
-    game_map = [''.join(line) for line in game_map]
+    new_game_map[player_location[0]][player_location[1]] = '\033[31mP\033[0m'
 
-    # Print the map
-    for line in game_map:
-        print(line)
+    for line in new_game_map:
+        print(''.join(line))
 
 def welcome_message():
     print(" _    _      _                            _          _____         _      ___      _                 _                  _ ")
@@ -56,8 +57,9 @@ def welcome_message():
     print("\  /\  /  __/ | (_| (_) | | | | | |  __/ | || (_) |   | |  __/>  <| |_  | | | | (_| |\ V /  __/ | | | |_| |_| | | |  __/_|")
     print(" \/  \/ \___|_|\___\___/|_| |_| |_|\___|  \__\___/    \_/\___/_/\_\\__| \_| |_/\__,_| \_/ \___|_| |_|\__|\__,_|_|  \___(_)\n")
 
-def check_command(north, north_location, east, east_location, south, south_location, west, west_location, use, grab, use_amount, grab_item):
+def check_command(north, north_location, north_function, east, east_location, east_function, south, south_location, south_function, west, west_location, west_function, use, grab, use_amount, grab_item):
     global player_location
+    global game_map
     while True:
         command = input("> ")
         if command == "map":
@@ -71,24 +73,28 @@ def check_command(north, north_location, east, east_location, south, south_locat
         elif command == "north":
             if north:
                 player_location = north_location
+                north_function()
                 break
             else:
                 print("You can't go that way.")
         elif command == "east":
             if east:
                 player_location = east_location
+                east_function()
                 break
             else:
                 print("You can't go that way.")
         elif command == "south":
             if south:
                 player_location = south_location
+                south_function()
                 break
             else:
                 print("You can't go that way.")
         elif command == "west":
             if west:
                 player_location = west_location
+                west_function()
                 break
             else:
                 print("You can't go that way.")
@@ -139,12 +145,17 @@ def start_game():
     print("You have a map of the school")
     show_map()
     print("Go 'west' to get in the school and start the game.")
-    check_command(False, [0, 0], False, [0, 0], False, [0, 0], True, [0, 0], False, False, 0, 0)
-    north_gate()
+    check_command(False, [0, 0], False, False, [0, 0], False, False, [0, 0], False, True, [2, 65], north_gate, False, False, 0, 0)
 
 def north_gate():
     print("You are in the school, just inside the North Gate.")
     print("You turn and see the North Gym to the south. You can also continue west to the quad.")
-    check_command(False, [0, 0], False, [0, 0], True, [0, 0], True, [2, 78], False, False, 0, 0)
+    check_command(False, [0, 0], None, False, [0, 0], None, True, [4, 66], inside_north_gym, True, [6, 27], west_quad, False, False, 0, 0)
+
+def inside_north_gym():
+    print("You are inside the North Gym.")
+
+def west_quad():
+    print("You are in the West Quad.")
 
 start_game()
