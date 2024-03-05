@@ -33,6 +33,10 @@ game_map = [
     "|_________________________________________________________________________________|"
 ]
 
+rooms = [
+    {"name": "North Gym", "items": "basketball", "coordinates": [4, 66]}
+]
+
 def show_map():
     global player_location
     global game_map
@@ -57,9 +61,11 @@ def welcome_message():
     print("\  /\  /  __/ | (_| (_) | | | | | |  __/ | || (_) |   | |  __/>  <| |_  | | | | (_| |\ V /  __/ | | | |_| |_| | | |  __/_|")
     print(" \/  \/ \___|_|\___\___/|_| |_| |_|\___|  \__\___/    \_/\___/_/\_\\__| \_| |_/\__,_| \_/ \___|_| |_|\__|\__,_|_|  \___(_)\n")
 
-def check_command(north, north_location, north_function, east, east_location, east_function, south, south_location, south_function, west, west_location, west_function, use, grab, use_amount, grab_item):
+def check_command(north, north_location, north_function, east, east_location, east_function, south, south_location, south_function, west, west_location, west_function, use, grab, use_amount):
     global player_location
     global game_map
+    global rooms
+    global room_location
     while True:
         command = input("> ")
         if command == "map":
@@ -102,31 +108,37 @@ def check_command(north, north_location, north_function, east, east_location, ea
             if use:
                 if use_amount > 0:
                     use_amount -= 1
-                    print("You used an item. Remaining items: " + str(use_amount))
+                    print("You used" + use_item + ".")
                 else:
                     print("There's nothing to use.")
             else:
                 print("You can't use that here.")
         elif command == "grab":
+            for room in rooms:
+                if player_location == room["coordinates"]:
+                    grab_item = room["items"]
+                    grab = True
             if grab:
-                if grab_item in current_room_items:
+                if grab_item not in inventory:
                     inventory.append(grab_item)
-                    current_room_items.remove(grab_item)
-                    print(f"You have grabbed {grab_item}.")
+                    print("You grabbed the " + grab_item + ".")
                 else:
-                    print("There's nothing to grab.")
+                    print("You already have that item.")
             else:
-                print("You can't grab that here.")
+                print("There is nothing to grab.")
         else:
             print("Invalid command!")
 
 
 def show_inventory():
+    total_width = 20
     print(" ____________________ ")
     print("|     Inventory      |")
-    print("|                    |")
-    print("|                    |")
-    print("|                    |")
+    for item in inventory:
+        word_width = total_width - len(item)
+        left_spaces = word_width // 2
+        right_spaces = word_width - left_spaces
+        print("|" + ' ' * left_spaces + item + ' ' * right_spaces + "|")
     print("|____________________|")
 
 def show_stats():
@@ -145,15 +157,18 @@ def start_game():
     print("You have a map of the school")
     show_map()
     print("Go 'west' to get in the school and start the game.")
-    check_command(False, [0, 0], False, False, [0, 0], False, False, [0, 0], False, True, [2, 65], north_gate, False, False, 0, 0)
+    check_command(False, [0, 0], False, False, [0, 0], False, False, [0, 0], False, True, [2, 65], north_gate, False, False, 0)
 
 def north_gate():
     print("You are in the school, just inside the North Gate.")
     print("You turn and see the North Gym to the south. You can also continue west to the quad.")
-    check_command(False, [0, 0], None, False, [0, 0], None, True, [4, 66], inside_north_gym, True, [6, 27], west_quad, False, False, 0, 0)
+    check_command(False, [0, 0], None, False, [0, 0], None, True, [4, 66], inside_north_gym, True, [6, 27], west_quad, False, False, 0)
 
 def inside_north_gym():
     print("You are inside the North Gym.")
+    print("There is a basketball lying there.")
+    print("You can grab it or go back outside north.")
+    check_command(True, [2, 79], north_gate, False, [0, 0], None, False, [0, 0], None, False, [0, 0], None, False, 0, True)
 
 def west_quad():
     print("You are in the West Quad.")
