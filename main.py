@@ -1,12 +1,13 @@
 import time
 
-commands = ["north", "east", "south", "west", "map", "use", "grab", "inventory", "stats", "help"]
+commands = ["north", "east", "south", "west", "map", "use", "grab", "inventory", "stats", "help", "settings"]
 
 # Variables
 grade = "F"
 percent = 0
 inventory = []
 player_location = [2, 79]
+auto_map = False
 
 game_map = [
     "___________________________________________________________________________________",
@@ -34,12 +35,13 @@ game_map = [
 ]
 
 rooms = [
-    {"name": "North Gym", "items": "basketball", "coordinates": [4, 66]}
+    {"name": "North Gym", "items": "basketball", "coordinates": [4, 66], "use": False}
 ]
 
 def show_map():
     global player_location
     global game_map
+    global auto_map
 
     new_game_map = [list(line) for line in game_map]
 
@@ -66,6 +68,7 @@ def check_command(north, north_location, north_function, east, east_location, ea
     global game_map
     global rooms
     global room_location
+    global auto_map
     while True:
         command = input("> ")
         if command == "map":
@@ -76,10 +79,14 @@ def check_command(north, north_location, north_function, east, east_location, ea
             show_stats()
         elif command == "help":
             print("Commands: " + str(commands))
+        elif command == "settings":
+            change_settings()
         elif command == "north":
             if north:
                 player_location = north_location
                 north_function()
+                if auto_map:
+                    show_map()
                 break
             else:
                 print("You can't go that way.")
@@ -87,6 +94,8 @@ def check_command(north, north_location, north_function, east, east_location, ea
             if east:
                 player_location = east_location
                 east_function()
+                if auto_map:
+                    show_map()
                 break
             else:
                 print("You can't go that way.")
@@ -94,6 +103,8 @@ def check_command(north, north_location, north_function, east, east_location, ea
             if south:
                 player_location = south_location
                 south_function()
+                if auto_map:
+                    show_map()
                 break
             else:
                 print("You can't go that way.")
@@ -101,6 +112,8 @@ def check_command(north, north_location, north_function, east, east_location, ea
             if west:
                 player_location = west_location
                 west_function()
+                if auto_map:
+                    show_map()
                 break
             else:
                 print("You can't go that way.")
@@ -147,6 +160,30 @@ def show_stats():
     print("|  Percent: " + str(percent) + "% |")
     print("|______________|")
 
+def change_settings():
+    global auto_map
+    while True:
+        print(" _________________________________ ")
+        print("|            Settings             |")
+        print("| 1. Toggle auto-map              |")
+        print("|    (Automatically shows the map |")
+        print("|     after every move)           |")
+        print("| 2. Back to game                 |")
+        print("|_________________________________|")
+        setting = input("Choose a setting to change: ")
+        if setting == "1":
+            auto_map = not auto_map
+            if auto_map:
+                print("Auto-map turned on.")
+                break
+            else:
+                print("Auto-map turned off.")
+                break
+        elif setting == "2":
+            break
+        else:
+            print("Invalid option.")
+
 def start_game():
     welcome_message()
     print("You are a lone Troy Student, fighting to secure good grades and making your Asian parents proud.")
@@ -156,7 +193,7 @@ def start_game():
     print("You stand in front of the North Gym gate.")
     print("You have a map of the school")
     show_map()
-    print("Go 'west' to get in the school and start the game.")
+    print("Go 'west' to get in the school and start the game. Type 'settings' to change settings.")
     check_command(False, [0, 0], False, False, [0, 0], False, False, [0, 0], False, True, [2, 65], north_gate, False, False, 0)
 
 def north_gate():
