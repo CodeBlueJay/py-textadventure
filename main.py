@@ -84,36 +84,36 @@ def check_command(north, north_location, north_function, east, east_location, ea
         elif command == "north":
             if north:
                 player_location = north_location
-                north_function()
-                if auto_map:
+                if auto_map == True:
                     show_map()
+                north_function()
                 break
             else:
                 print("You can't go that way.")
         elif command == "east":
             if east:
                 player_location = east_location
-                east_function()
-                if auto_map:
+                if auto_map == True:
                     show_map()
+                east_function()
                 break
             else:
                 print("You can't go that way.")
         elif command == "south":
             if south:
                 player_location = south_location
-                south_function()
-                if auto_map:
+                if auto_map == True:
                     show_map()
+                south_function()
                 break
             else:
                 print("You can't go that way.")
         elif command == "west":
             if west:
                 player_location = west_location
-                west_function()
-                if auto_map:
+                if auto_map == True:
                     show_map()
+                west_function()
                 break
             else:
                 print("You can't go that way.")
@@ -199,7 +199,7 @@ def start_game():
 def north_gate():
     print("You are in the school, just inside the North Gate.")
     print("You turn and see the North Gym to the south. You can also continue west to the quad.")
-    check_command(False, [0, 0], None, False, [0, 0], None, True, [4, 66], inside_north_gym, True, [6, 27], west_quad, False, False, 0)
+    check_command(False, [0, 0], None, False, [0, 0], None, True, [4, 66], inside_north_gym, True, [6, 27], east_quad, False, False, 0)
 
 def inside_north_gym():
     print("You are inside the North Gym.")
@@ -207,7 +207,9 @@ def inside_north_gym():
     print("You can grab it or go back outside north.")
     check_command(True, [2, 79], north_gate, False, [0, 0], None, False, [0, 0], None, False, [0, 0], None, False, 0, True)
 
-def west_quad():
-    print("You are in the West Quad.")
+def east_quad():
+    print("You are in the East Quad.")
+    print("You can go north to the Office, west to the West Quad, south into the 500s Building and the PE Intersection, or back east to the North Gate.")
+    check_command(True, [2, 41], office, True, [2, 65], north_gate, True, [0, 0], south_intersection, True, [6, 27], west_quad, False, False, 0)
 
 start_game()

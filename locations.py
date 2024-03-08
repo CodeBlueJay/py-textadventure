@@ -1,4 +1,4 @@
-player_location = [6, 27]
+player_location = [8, 55]
 
 def show_map():
     global player_location
@@ -48,4 +48,7 @@ Inside North Gate - [2, 65]
 Inside North Gym - [4, 66]
 East Quad - [6, 50]
 West Quad - [6, 27]
+Inside 500s Building - [11, 49]
+Inside Office - [2, 41]
+PE Intersection - [8, 55]
 '''
