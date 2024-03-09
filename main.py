@@ -210,6 +210,6 @@ def inside_north_gym():
 def east_quad():
     print("You are in the East Quad.")
     print("You can go north to the Office, west to the West Quad, south into the 500s Building and the PE Intersection, or back east to the North Gate.")
-    check_command(True, [2, 41], office, True, [2, 65], north_gate, True, [0, 0], south_intersection, True, [6, 27], west_quad, False, False, 0)
+    check_command(True, [2, 41], office, True, [2, 65], north_gate, True, [0, 0], quad_south, True, [6, 27], west_quad, False, False, 0)
 
 start_game()
