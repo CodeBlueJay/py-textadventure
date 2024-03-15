@@ -1,4 +1,4 @@
-Text Adventure made with python, by HyunjunKimchi (Who did most of the work)
+Text Adventure made with python, by CodeBlueJay (Who did ALL of the work)
 50 thousand lashings to HyunJun who is a FREELOADER and is doing ABSOLUTELY NOTHING
 ```py
 return "CodeBlueJay is cool"
