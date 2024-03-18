@@ -47,14 +47,9 @@ class Blue:
             i += 1
 
 blue_code = """
-type.out("Hello, world!")
-type.in("Enter your name: ")
-if 5 > 3:
-    type.out("This is the Blue programming language.")
-    if 2 > 1:
-        type.out("This line will be printed if 2 > 1.")
-repeat 3:
-    type.out("This line will be printed three times.")
+type.out("Hello World")
+repeat 2:
+    type.out("Chat with me")
 """
 
 interpreter = Blue(blue_code)
