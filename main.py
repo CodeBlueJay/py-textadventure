@@ -1,11 +1,23 @@
-import time
+import time, re
 
 commands = ["north", "east", "south", "west", "map", "use", "grab", "inventory", "stats", "help", "settings"]
+
+# ANSI escape codes
+RED = "\033[31m"
+BLUE = "\033[34m"
+GREEN = "\033[32m"
+YELLOW = "\033[33m"
+ORANGE = "\033[91m"
+MAGENTA = "\033[35m"
+BLACK = "\033[30m"
+CYAN = "\033[36m"
+BOLD = "\033[1m"
+RESET = "\033[0m"
 
 # Variables
 grade = "F"
 percent = 0
-inventory = []
+inventory = ["Progress Report"] # Progress Report is default.
 player_location = [2, 79]
 auto_map = False
 
@@ -35,25 +47,32 @@ game_map = [
 ]
 
 rooms = [
-    {"name": "North Gym", "items": "basketball", "coordinates": [4, 66], "use": False}
+    {"name": "North Gym", "items": "basketball", "coordinates": [4, 66], "use": False, "grab": True},
+    {"name": "Office", "items": "report card", "coordinates": [2, 41], "use": True, "grab": False}
 ]
 
 def show_map():
     global player_location
     global game_map
-    global auto_map
 
-    new_game_map = [list(line) for line in game_map]
+    game_map = [list(line) for line in game_map]
 
-    for i in range(len(new_game_map)):
-        for j in range(len(new_game_map[i])):
-            if new_game_map[i][j] == '\033[31mP\033[0m':
-                new_game_map[i][j] = ' '
+    game_map[player_location[0]][player_location[1]] = 'P'
 
-    new_game_map[player_location[0]][player_location[1]] = '\033[31mP\033[0m'
+    player_printed = False
 
-    for line in new_game_map:
-        print(''.join(line))
+    for i, line in enumerate(game_map):
+        for j, char in enumerate(line):
+            if char == 'P' and not player_printed and [i, j] == player_location:
+                print(f"{RED}{char}{RESET}", end="") # Player Icon Color
+                player_printed = True
+            elif re.match(r'[a-zA-Z0-9 ]', char):
+                print(f"{MAGENTA}{char}{RESET}", end="") # Map Locations Color
+            elif re.match(r'[_|]', char):
+                print(f"{CYAN}{char}{RESET}", end="") # Map Borders Color
+            else:
+                print(char, end="")
+        print()
 
 def welcome_message():
     print(" _    _      _                            _          _____         _      ___      _                 _                  _ ")
@@ -63,7 +82,7 @@ def welcome_message():
     print("\  /\  /  __/ | (_| (_) | | | | | |  __/ | || (_) |   | |  __/>  <| |_  | | | | (_| |\ V /  __/ | | | |_| |_| | | |  __/_|")
     print(" \/  \/ \___|_|\___\___/|_| |_| |_|\___|  \__\___/    \_/\___/_/\_\\__| \_| |_/\__,_| \_/ \___|_| |_|\__|\__,_|_|  \___(_)\n")
 
-def check_command(north, north_location, north_function, east, east_location, east_function, south, south_location, south_function, west, west_location, west_function, use, grab, use_amount):
+def check_command(north, north_location, north_function, east, east_location, east_function, south, south_location, south_function, west, west_location, west_function, use, grab):
     global player_location
     global game_map
     global rooms
@@ -118,19 +137,21 @@ def check_command(north, north_location, north_function, east, east_location, ea
             else:
                 print("You can't go that way.")
         elif command == "use":
+            for room in rooms:
+                if player_location == room["coordinates"]:
+                    use_item = room["items"]
             if use:
-                if use_amount > 0:
-                    use_amount -= 1
+                if use_item in inventory:
+                    inventory.remove(use_item)
                     print("You used" + use_item + ".")
                 else:
-                    print("There's nothing to use.")
+                    print("You've used that already.")
             else:
-                print("You can't use that here.")
+                print("You can't use anything here.")
         elif command == "grab":
             for room in rooms:
                 if player_location == room["coordinates"]:
                     grab_item = room["items"]
-                    grab = True
             if grab:
                 if grab_item not in inventory:
                     inventory.append(grab_item)
@@ -147,6 +168,7 @@ def show_inventory():
     total_width = 20
     print(" ____________________ ")
     print("|     Inventory      |")
+    print("|--------------------|")
     for item in inventory:
         word_width = total_width - len(item)
         left_spaces = word_width // 2
@@ -155,10 +177,15 @@ def show_inventory():
     print("|____________________|")
 
 def show_stats():
-    print(" ______________ ")
-    print("|  Grade: " + grade + "    |")
-    print("|  Percent: " + str(percent) + "% |")
-    print("|______________|")
+    print(" ________________ ")
+    print("|     Grades     |")
+    print("|----------------|")
+    print("|  Grade: " + grade + "      |")
+    if percent < 10:
+        print("|  Percent: " + str(percent) + "%   |")
+    else:
+        print("|  Percent: " + str(percent) + "%  |")
+    print("|________________|")
 
 def change_settings():
     global auto_map
@@ -188,28 +215,44 @@ def start_game():
     welcome_message()
     print("You are a lone Troy Student, fighting to secure good grades and making your Asian parents proud.")
     print("Your objective it to make it across the school, visitng as many classes as possible to get the best grades.")
+    print("When you are done, go to the office and show the principal your grades.")
     print("Commands: " + str(commands) + '\n')
     time.sleep(1)
     print("You stand in front of the North Gym gate.")
     print("You have a map of the school")
     show_map()
     print("Go 'west' to get in the school and start the game. Type 'settings' to change settings.")
-    check_command(False, [0, 0], False, False, [0, 0], False, False, [0, 0], False, True, [2, 65], north_gate, False, False, 0)
+    check_command(False, [0, 0], False, False, [0, 0], False, False, [0, 0], False, True, [2, 65], north_gate, False, False)
 
 def north_gate():
     print("You are in the school, just inside the North Gate.")
     print("You turn and see the North Gym to the south. You can also continue west to the quad.")
-    check_command(False, [0, 0], None, False, [0, 0], None, True, [4, 66], inside_north_gym, True, [6, 27], east_quad, False, False, 0)
+    check_command(False, [0, 0], None, False, [0, 0], None, True, [4, 66], inside_north_gym, True, [6, 50], east_quad, False, False)
 
 def inside_north_gym():
     print("You are inside the North Gym.")
     print("There is a basketball lying there.")
     print("You can grab it or go back outside north.")
-    check_command(True, [2, 79], north_gate, False, [0, 0], None, False, [0, 0], None, False, [0, 0], None, False, 0, True)
+    check_command(True, [2, 79], north_gate, False, [0, 0], None, False, [0, 0], None, False, [0, 0], None, 0, False, True)
 
 def east_quad():
     print("You are in the East Quad.")
     print("You can go north to the Office, west to the West Quad, south into the 500s Building and the PE Intersection, or back east to the North Gate.")
-    check_command(True, [2, 41], office, True, [2, 65], north_gate, True, [0, 0], quad_south, True, [6, 27], west_quad, False, False, 0)
+    check_command(True, [2, 41], office, True, [2, 65], north_gate, True, [0, 0], quad_south, True, [6, 27], west_quad, False, False)
+
+def office():
+    print("You are in the Office, ready to leave.")
+    print("The principal is there.")
+    print("He wants to see your grades.")
+    print("You can use your progress report or go south to the East Quad.")
+    check_command(False, [0, 0], None, False, [0, 0], None, True, [6, 50], east_quad, False, [0, 0], None, True, False)
+
+def west_quad():
+    print("You are in the West Quad.")
+
+def quad_south():
+    print("You decide to go south.")
+    print("1. You can go to the 500s Building.")
+    print("2. You can go to the PE Intersection.")
 
 start_game()
