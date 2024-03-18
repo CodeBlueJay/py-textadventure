@@ -1,3 +1,17 @@
+import re
+
+# ANSI escape codes
+RED = "\033[31m"
+BLUE = "\033[34m"
+GREEN = "\033[32m"
+YELLOW = "\033[33m"
+ORANGE = "\033[91m"
+MAGENTA = "\033[35m"
+BLACK = "\033[30m"
+CYAN = "\033[36m"
+BOLD = "\033[1m"
+RESET = "\033[0m"
+
 player_location = [8, 55]
 
 def show_map():
@@ -27,18 +41,24 @@ def show_map():
         "|_________________________________________________________________________________|"
     ]
 
-    # Convert the map to a list of lists
     game_map = [list(line) for line in game_map]
 
-    # Update the player's location
-    game_map[player_location[0]][player_location[1]] = '\033[31mP\033[0m'
+    game_map[player_location[0]][player_location[1]] = 'P'
 
-    # Convert the map back to a list of strings
-    game_map = [''.join(line) for line in game_map]
+    player_printed = False
 
-    # Print the map
-    for line in game_map:
-        print(line)
+    for i, line in enumerate(game_map):
+        for j, char in enumerate(line):
+            if char == 'P' and not player_printed and [i, j] == player_location:
+                print(f"{RED}{char}{RESET}", end="") # Player Icon Color
+                player_printed = True
+            elif re.match(r'[a-zA-Z0-9 ]', char):
+                print(f"{MAGENTA}{char}{RESET}", end="") # Map Locations Color
+            elif re.match(r'[_|]', char):
+                print(f"{CYAN}{char}{RESET}", end="") # Map Borders Color
+            else:
+                print(char, end="")
+        print()
 
 show_map()
 
