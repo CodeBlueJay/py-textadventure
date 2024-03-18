@@ -4,6 +4,17 @@ Text Adventure made with python, by CodeBlueJay (Who did ALL of the work)
 return "CodeBlueJay is cool"
 ```
 HyunJun should actually do work fr.
+```python
+print("Hyunjun, it's interesting how you're like a git command - 'git commit' is unknown to you.")
+print("It seems like the only 'push' you know is pushing off work.")
+print("If only you debugged code as much as you debugged your responsibilities.")
+print("In the world of coding, you're like a semicolon - we forget you're there until something breaks.")
+print("Your contribution to our project is like a zero byte file - it exists, but it's empty.")
+print("You're like a recursive function with no base case - you could go on forever without producing anything useful.")
+print("Your work ethic is like a race condition - the outcome is unpredictable, but it's usually not good.")
+print("If you were a piece of code, you'd be full of TODO comments - lots of things that should be done, but aren't.")
+print("You're like a deprecated API - still around, but nobody really wants to use you.")
+```
 ```java
 import java.util.Iterator;
 
