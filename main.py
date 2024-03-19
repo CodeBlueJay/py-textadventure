@@ -15,6 +15,7 @@ CYAN = "\033[36m"
 BOLD = "\033[1m"
 RESET = "\033[0m"
 GREENB = GREEN + BOLD
+YELLOWB = YELLOW + BOLD
 
 # Variables
 grade = "F"
@@ -24,31 +25,6 @@ player_location = [2, 79]
 auto_map = False
 basketball_taken = 0
 
-game_map = [
-    "___________________________________________________________________________________",
-    "|                |   |               | |                       |                  |",
-    "|                |   |     Theater   | |   Office   ___________|    North Gate    |",
-    "|                |   |_______________| |___________|         ____________         |",
-    "|                |                                          |            |        |",
-    "|     300s       |                                          |   North    |        |",
-    "|   Building     |                   Quad                   |    Gym     |        |",
-    "|                |                                          |____________|        |",
-    "|                |              ______________________   ______         ______    |",
-    "|                |   _______   |                      | |      | ____  |      |   |",
-    "|________________|  |       |  |                      | | Girl ||    | | Boys |   |",
-    "|___________________|       |  |       500s           | |Locker||Pool| |Locker|   |",
-    "|                           |  |      Building        | | Room ||____| | Room |   |",
-    "|       400s Building       |  |                      | |______|       |______|   |",
-    "|___________________________|  |                      |      ________             |",
-    "|                              |______________________|     | South  |            |",
-    "|                                    ______________         |  Gym   |            |",
-    "|                                   |              |        |________|            |",
-    "|                                   |     900s     |                              |",
-    "|                                   |   Building   |                              |",
-    "|                                   |______________|                              |",
-    "|_________________________________________________________________________________|"
-]
-
 rooms = [
     {"name": "North Gym", "items": "Basketball", "coordinates": [4, 66], "use": False, "grab": True, "variable": basketball_taken},
     {"name": "Office", "items": "Progress Report", "coordinates": [2, 41], "use": True, "grab": False, "variable": None}
@@ -57,6 +33,31 @@ rooms = [
 def show_map():
     global player_location
     global game_map
+
+    game_map = [
+        "___________________________________________________________________________________",
+        "|                |   |               | |                       |                  |",
+        "|                |   |     Theater   | |   Office   ___________|    North Gate    |",
+        "|                |   |_______________| |___________|         ____________         |",
+        "|                |                                          |            |        |",
+        "|     300s       |                                          |   North    |        |",
+        "|   Building     |                   Quad                   |    Gym     |        |",
+        "|                |                                          |____________|        |",
+        "|                |              ______________________   ______         ______    |",
+        "|                |   _______   |                      | |      | ____  |      |   |",
+        "|________________|  |       |  |                      | | Girl ||    | | Boys |   |",
+        "|___________________|       |  |       500s           | |Locker||Pool| |Locker|   |",
+        "|                           |  |      Building        | | Room ||____| | Room |   |",
+        "|       400s Building       |  |                      | |______|       |______|   |",
+        "|___________________________|  |                      |      ________             |",
+        "|                              |______________________|     | South  |            |",
+        "|                                    ______________         |  Gym   |            |",
+        "|                                   |              |        |________|            |",
+        "|                                   |     900s     |                              |",
+        "|                                   |   Building   |                              |",
+        "|                                   |______________|                              |",
+        "|_________________________________________________________________________________|"
+    ]
 
     game_map = [list(line) for line in game_map]
 
@@ -72,7 +73,7 @@ def show_map():
             elif re.match(r'[a-zA-Z0-9 ]', char):
                 print(f"{CYAN}{BOLD}{char}{RESET}", end="") # Map Locations Color
             elif re.match(r'[_|]', char):
-                print(f"{YELLOW}{BOLD}{char}{RESET}", end="") # Map Borders Color
+                print(f"{YELLOWB}{char}{RESET}", end="") # Map Borders Color
             else:
                 print(char, end="")
         print()
@@ -195,11 +196,11 @@ def show_stats():
     print(" ________________ ")
     print(f"|     {MAGENTA}{BOLD}Grades{RESET}     |")
     print("|----------------|")
-    print(f"|  {YELLOW}{BOLD}Grade:{RESET} " + grade + "      |")
+    print(f"|  {YELLOWB}Grade:{RESET} " + grade + "      |")
     if percent < 10:
-        print(f"|  {YELLOW}{BOLD}Percent:{RESET} " + str(percent) + "%   |")
+        print(f"|  {YELLOWB}Percent:{RESET} " + str(percent) + "%   |")
     else:
-        print(f"|  {YELLOW}{BOLD}Percent:{RESET} " + str(percent) + "%  |")
+        print(f"|  {YELLOWB}Percent:{RESET} " + str(percent) + "%  |")
     print("|________________|")
 
 def calculate_grade():
@@ -269,21 +270,21 @@ def inside_north_gym():
     if basketball_taken == 0:
         print("There is a basketball lying there.")
         print(f"You can {GREENB}grab{RESET} it or go back outside {GREENB}north{RESET}.")
-        check_command(True, [2, 79], north_gate, False, [0, 0], None, False, [0, 0], None, False, [0, 0], None, False, True)
+        check_command(True, [2, 65], north_gate, False, [0, 0], None, False, [0, 0], None, False, [0, 0], None, False, True)
     else:
         print(f"You can go back outside {GREENB}north{RESET}.")
         check_command(True, [2, 79], north_gate, False, [0, 0], None, False, [0, 0], None, False, [0, 0], None, False, True)
 
 def east_quad():
     print("You are in the East Quad.")
-    print("You can go north to the Office, west to the West Quad, south into the 500s Building and the PE Intersection, or back east to the North Gate.")
+    print(f"You can go {GREENB}north{RESET} to the Office, {GREENB}west{RESET} to the West Quad, {GREENB}south{RESET} into the 500s Building and the PE Intersection, or back {GREENB}east{RESET} to the North Gate.")
     check_command(True, [2, 41], office, True, [2, 65], north_gate, True, [0, 0], quad_south, True, [6, 27], west_quad, False, False)
 
 def office():
     print("You are in the Office, ready to leave.")
     print("The principal is there.")
     print("He wants to see your grades.")
-    print("You can use your progress report or go south to the East Quad.")
+    print(f"You can {GREENB}use{RESET} your progress report or go {GREENB}south{RESET} to the East Quad.")
     check_command(False, [0, 0], None, False, [0, 0], None, True, [6, 50], east_quad, False, [0, 0], None, True, False)
     end_game()
 
@@ -308,14 +309,51 @@ def end_game():
 def s_ending():
     print("The principal is amazed at your grades.")
     print("He gives you a scholarship to any college you want.")
-    print("Rank: Child Prodigy")
+    print("Your Asian parents are proud of you.")
+    print("They say you are just as good as your 5 year old cousin in China.")
+    print(f"Rank: {YELLOWB}Child Prodigy{RESET}")
+
+def a_ending():
+    print("The principal is proud of your grades.")
+    print("He sends you off with a farewell and lots of candy.")
+    print("Your Asian parents accept your grades happily.")
+    print("They will take all A's.")
+    print(f"Rank: {YELLOWB}Smart Kid{RESET}")
+
+def b_ending():
+    print("The principal is happy that you managed acceptable grades.")
+    print("He wishes you farewell and good luck at the gate.")
+    print("Your Asian parents are slightly bothered that you almost had all A's.")
+    print("They tell you that you did sufficient.")
+    print(f"Rank: {YELLOWB}Average Student{RESET}")
+
+def c_ending():
+    print("The principal is relieved that you managed to pass and graduate.")
+    print("He hopes you can study harder and go on to get into college.")
+    print("Your Asian parent's silence says it all.")
+    print("They say at least you passed.")
+    print(f"Rank: {YELLOWB}Lucky Passer{RESET}")
+
+def d_ending():
+    print("The principal is sad that you failed but almost passed.")
+    print("He says to take summer school with confidence that you will do better.")
+    print("Your Asian parent's expressions say it all.")
+    print("They are disappointed in you.")
+    print(f"Rank: {YELLOWB}Close Misser{RESET}")
+
+def f_ending():
+    print("The principal is shocked that you somehow got that low of a grade.")
+    print("He dejectedly hands you a summer school sentence and tells you to study harder.")
+    print("Your Asian parent's silence and expressions fills you with shame.")
+    print("They have no words to describe your failure.")
+    print(f"Rank: {YELLOWB}Summer School Silence{RESET}")
 
 def west_quad():
     print("You are in the West Quad.")
 
 def quad_south():
     print("You decide to go south.")
-    print("1. You can go to the 500s Building.")
-    print("2. You can go to the PE Intersection.")
+    print(f"{GREENB}1.{RESET} You can go to the 500s Building.")
+    print(f"{GREENB}2.{RESET} You can go to the PE Intersection.")
 
 start_game()
