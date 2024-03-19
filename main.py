@@ -273,7 +273,7 @@ def inside_north_gym():
         check_command(True, [2, 65], north_gate, False, [0, 0], None, False, [0, 0], None, False, [0, 0], None, False, True)
     else:
         print(f"You can go back outside {GREENB}north{RESET}.")
-        check_command(True, [2, 79], north_gate, False, [0, 0], None, False, [0, 0], None, False, [0, 0], None, False, True)
+        check_command(True, [2, 65], north_gate, False, [0, 0], None, False, [0, 0], None, False, [0, 0], None, False, True)
 
 def east_quad():
     print("You are in the East Quad.")
