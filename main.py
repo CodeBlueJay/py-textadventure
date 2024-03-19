@@ -148,6 +148,8 @@ def check_command(north, north_location, north_function, east, east_location, ea
                 if use_item in inventory:
                     inventory.remove(use_item)
                     print("You used " + use_item + ".")
+                    if player_location == [2, 41]:
+                        break
                 else:
                     print("You've used that already.")
             else:
@@ -186,6 +188,9 @@ def show_inventory():
     print("|____________________|")
 
 def show_stats():
+    global grade
+    global percent
+    calculate_grade()
     print(" ________________ ")
     print(f"|     {MAGENTA}Grades{RESET}     |")
     print("|----------------|")
@@ -195,6 +200,22 @@ def show_stats():
     else:
         print(f"|  {YELLOW}Percent:{RESET} " + str(percent) + "%  |")
     print("|________________|")
+
+def calculate_grade():
+    global percent
+    global grade
+    if percent == 100:
+        grade = "S"
+    elif percent >= 90:
+        grade = "A"
+    elif percent >= 80:
+        grade = "B"
+    elif percent >= 70:
+        grade = "C"
+    elif percent >= 60:
+        grade = "D"
+    else:
+        grade = "F"
 
 def change_settings():
     global auto_map
@@ -263,6 +284,30 @@ def office():
     print("He wants to see your grades.")
     print("You can use your progress report or go south to the East Quad.")
     check_command(False, [0, 0], None, False, [0, 0], None, True, [6, 50], east_quad, False, [0, 0], None, True, False)
+    end_game()
+
+def end_game():
+    global grade
+    global percent
+    print("You show the principal your grades.")
+    calculate_grade()
+    if grade == "S":
+        s_ending()
+    elif grade == "A":
+        a_ending()
+    elif grade == "B":
+        b_ending()
+    elif grade == "C":
+        c_ending()
+    elif grade == "D":
+        d_ending()
+    elif grade == "F":
+        f_ending()
+
+def s_ending():
+    print("The principal is amazed at your grades.")
+    print("He gives you a scholarship to any college you want.")
+    print("Rank: Child Prodigy")
 
 def west_quad():
     print("You are in the West Quad.")
