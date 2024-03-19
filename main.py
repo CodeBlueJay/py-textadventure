@@ -10,6 +10,7 @@ YELLOW = "\033[33m"
 ORANGE = "\033[91m"
 MAGENTA = "\033[35m"
 BLACK = "\033[30m"
+WHITE = "\033[37m"
 CYAN = "\033[36m"
 BOLD = "\033[1m"
 RESET = "\033[0m"
@@ -20,6 +21,7 @@ percent = 0
 inventory = ["Progress Report"] # Progress Report is default.
 player_location = [2, 79]
 auto_map = False
+basketball_taken = 0
 
 game_map = [
     "___________________________________________________________________________________",
@@ -47,8 +49,8 @@ game_map = [
 ]
 
 rooms = [
-    {"name": "North Gym", "items": "basketball", "coordinates": [4, 66], "use": False, "grab": True},
-    {"name": "Office", "items": "report card", "coordinates": [2, 41], "use": True, "grab": False}
+    {"name": "North Gym", "items": "Basketball", "coordinates": [4, 66], "use": False, "grab": True, "variable": basketball_taken},
+    {"name": "Office", "items": "Progress Report", "coordinates": [2, 41], "use": True, "grab": False, "variable": None}
 ]
 
 def show_map():
@@ -67,20 +69,20 @@ def show_map():
                 print(f"{RED}{char}{RESET}", end="") # Player Icon Color
                 player_printed = True
             elif re.match(r'[a-zA-Z0-9 ]', char):
-                print(f"{MAGENTA}{char}{RESET}", end="") # Map Locations Color
+                print(f"{CYAN}{BOLD}{char}{RESET}", end="") # Map Locations Color
             elif re.match(r'[_|]', char):
-                print(f"{CYAN}{char}{RESET}", end="") # Map Borders Color
+                print(f"{BLUE}{char}{RESET}", end="") # Map Borders Color
             else:
                 print(char, end="")
         print()
 
 def welcome_message():
-    print(" _    _      _                            _          _____         _      ___      _                 _                  _ ")
-    print("| |  | |    | |                          | |        |_   _|       | |    / _ \    | |               | |                | |")
-    print("| |  | | ___| | ___ ___  _ __ ___   ___  | |_ ___     | | _____  _| |_  / /_\ \ __| |_   _____ _ __ | |_ _   _ _ __ ___| |")
-    print("| |/\| |/ _ \ |/ __/ _ \| '_ ` _ \ / _ \ | __/ _ \    | |/ _ \ \/ / __| |  _  |/ _` \ \ / / _ \ '_ \| __| | | | '__/ _ \ |")
-    print("\  /\  /  __/ | (_| (_) | | | | | |  __/ | || (_) |   | |  __/>  <| |_  | | | | (_| |\ V /  __/ | | | |_| |_| | | |  __/_|")
-    print(" \/  \/ \___|_|\___\___/|_| |_| |_|\___|  \__\___/    \_/\___/_/\_\\__| \_| |_/\__,_| \_/ \___|_| |_|\__|\__,_|_|  \___(_)\n")
+    print(f"{BLUE} _    _      _                            _          _____         _      ___      _                 _                  _ ")
+    print(f"| |  | |    | |                          | |        |_   _|       | |    / _ \    | |               | |                | |")
+    print(f"| |  | | ___| | ___ ___  _ __ ___   ___  | |_ ___     | | _____  _| |_  / /_\ \ __| |_   _____ _ __ | |_ _   _ _ __ ___| |")
+    print(f"| |/\| |/ _ \ |/ __/ _ \| '_ ` _ \ / _ \ | __/ _ \    | |/ _ \ \/ / __| |  _  |/ _` \ \ / / _ \ '_ \| __| | | | '__/ _ \ |")
+    print(f"\  /\  /  __/ | (_| (_) | | | | | |  __/ | || (_) |   | |  __/>  <| |_  | | | | (_| |\ V /  __/ | | | |_| |_| | | |  __/_|")
+    print(f" \/  \/ \___|_|\___\___/|_| |_| |_|\___|  \__\___/    \_/\___/_/\_\\__| \_| |_/\__,_| \_/ \___|_| |_|\__|\__,_|_|  \___(_){RESET}\n")
 
 def check_command(north, north_location, north_function, east, east_location, east_function, south, south_location, south_function, west, west_location, west_function, use, grab):
     global player_location
@@ -98,6 +100,8 @@ def check_command(north, north_location, north_function, east, east_location, ea
             show_stats()
         elif command == "help":
             print("Commands: " + str(commands))
+            print(f"Words in {GREEN}green{RESET} are commands you can type.")
+            print(f"The commands that you can use anywhere are: {GREEN}map{RESET}, {GREEN}inventory{RESET}, {GREEN}stats{RESET}, {GREEN}help{RESET}, and {GREEN}settings{RESET}.")
         elif command == "settings":
             change_settings()
         elif command == "north":
@@ -143,7 +147,7 @@ def check_command(north, north_location, north_function, east, east_location, ea
             if use:
                 if use_item in inventory:
                     inventory.remove(use_item)
-                    print("You used" + use_item + ".")
+                    print("You used " + use_item + ".")
                 else:
                     print("You've used that already.")
             else:
@@ -152,10 +156,15 @@ def check_command(north, north_location, north_function, east, east_location, ea
             for room in rooms:
                 if player_location == room["coordinates"]:
                     grab_item = room["items"]
+                    grab_checker = room["variable"]
             if grab:
                 if grab_item not in inventory:
                     inventory.append(grab_item)
                     print("You grabbed the " + grab_item + ".")
+                    grab_checker = 1
+                    for room in rooms:
+                        if player_location == room["coordinates"]:
+                            room["variable"] = grab_checker
                 else:
                     print("You already have that item.")
             else:
@@ -167,35 +176,35 @@ def check_command(north, north_location, north_function, east, east_location, ea
 def show_inventory():
     total_width = 20
     print(" ____________________ ")
-    print("|     Inventory      |")
+    print(f"|     {MAGENTA}Inventory{RESET}      |")
     print("|--------------------|")
     for item in inventory:
         word_width = total_width - len(item)
         left_spaces = word_width // 2
         right_spaces = word_width - left_spaces
-        print("|" + ' ' * left_spaces + item + ' ' * right_spaces + "|")
+        print(f"|" + ' ' * left_spaces + item + ' ' * right_spaces + "|")
     print("|____________________|")
 
 def show_stats():
     print(" ________________ ")
-    print("|     Grades     |")
+    print(f"|     {MAGENTA}Grades{RESET}     |")
     print("|----------------|")
-    print("|  Grade: " + grade + "      |")
+    print(f"|  {YELLOW}Grade:{RESET} " + grade + "      |")
     if percent < 10:
-        print("|  Percent: " + str(percent) + "%   |")
+        print(f"|  {YELLOW}Percent:{RESET} " + str(percent) + "%   |")
     else:
-        print("|  Percent: " + str(percent) + "%  |")
+        print(f"|  {YELLOW}Percent:{RESET} " + str(percent) + "%  |")
     print("|________________|")
 
 def change_settings():
     global auto_map
     while True:
         print(" _________________________________ ")
-        print("|            Settings             |")
-        print("| 1. Toggle auto-map              |")
+        print(f"|            {MAGENTA}Settings{RESET}             |")
+        print(f"| {GREEN}1.{RESET} Toggle auto-map              |")
         print("|    (Automatically shows the map |")
         print("|     after every move)           |")
-        print("| 2. Back to game                 |")
+        print(f"| {GREEN}2.{RESET} Back to game                 |")
         print("|_________________________________|")
         setting = input("Choose a setting to change: ")
         if setting == "1":
@@ -221,19 +230,27 @@ def start_game():
     print("You stand in front of the North Gym gate.")
     print("You have a map of the school")
     show_map()
-    print("Go 'west' to get in the school and start the game. Type 'settings' to change settings.")
+    print(f"Go {GREEN}west{RESET} to get in the school and start the game. Type {GREEN}settings{RESET} to change settings.")
     check_command(False, [0, 0], False, False, [0, 0], False, False, [0, 0], False, True, [2, 65], north_gate, False, False)
 
 def north_gate():
     print("You are in the school, just inside the North Gate.")
-    print("You turn and see the North Gym to the south. You can also continue west to the quad.")
+    print(f"You turn and see the North Gym to the {GREEN}south{RESET}. You can also continue {GREEN}west{RESET} to the quad.")
     check_command(False, [0, 0], None, False, [0, 0], None, True, [4, 66], inside_north_gym, True, [6, 50], east_quad, False, False)
 
 def inside_north_gym():
+    global basketball_taken
     print("You are inside the North Gym.")
-    print("There is a basketball lying there.")
-    print("You can grab it or go back outside north.")
-    check_command(True, [2, 79], north_gate, False, [0, 0], None, False, [0, 0], None, False, [0, 0], None, 0, False, True)
+    for room in rooms:
+        if player_location == room["coordinates"]:
+            basketball_taken = room["variable"]
+    if basketball_taken == 0:
+        print("There is a basketball lying there.")
+        print(f"You can {GREEN}grab{RESET} it or go back outside {GREEN}north{RESET}.")
+        check_command(True, [2, 79], north_gate, False, [0, 0], None, False, [0, 0], None, False, [0, 0], None, False, True)
+    else:
+        print(f"You can go back outside {GREEN}north{RESET}.")
+        check_command(True, [2, 79], north_gate, False, [0, 0], None, False, [0, 0], None, False, [0, 0], None, False, True)
 
 def east_quad():
     print("You are in the East Quad.")
