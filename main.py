@@ -16,6 +16,7 @@ BOLD = "\033[1m"
 RESET = "\033[0m"
 GREENB = GREEN + BOLD
 YELLOWB = YELLOW + BOLD
+WHITEB = WHITE + BOLD
 
 # Variables
 grade = "F"
@@ -101,9 +102,9 @@ def check_command(north, north_location, north_function, east, east_location, ea
         elif command == "stats":
             show_stats()
         elif command == "help":
-            print("Commands: " + str(commands))
-            print(f"Words in {GREEN}green{RESET} are commands you can type.")
-            print(f"The commands that you can use anywhere are: {GREEN}map{RESET}, {GREEN}inventory{RESET}, {GREEN}stats{RESET}, {GREEN}help{RESET}, and {GREEN}settings{RESET}.")
+            print("Commands: " + GREENB + str(commands) + RESET)
+            print(f"Words in {GREENB}green{RESET} are commands you can type.")
+            print(f"The commands that you can use anywhere are: {GREENB}map{RESET}, {GREENB}inventory{RESET}, {GREENB}stats{RESET}, {GREENB}help{RESET}, and {GREENB}settings{RESET}.")
         elif command == "settings":
             change_settings()
         elif command == "north":
@@ -180,7 +181,7 @@ def check_command(north, north_location, north_function, east, east_location, ea
 def show_inventory():
     total_width = 20
     print(" ____________________ ")
-    print(f"|     {MAGENTA}{BOLD}Inventory{RESET}      |")
+    print(f"|     {YELLOWB}Inventory{RESET}      |")
     print("|--------------------|")
     for item in inventory:
         word_width = total_width - len(item)
@@ -194,36 +195,36 @@ def show_stats():
     global percent
     calculate_grade()
     print(" ________________ ")
-    print(f"|     {MAGENTA}{BOLD}Grades{RESET}     |")
+    print(f"|     {YELLOWB}Grades{RESET}     |")
     print("|----------------|")
-    print(f"|  {YELLOWB}Grade:{RESET} " + grade + "      |")
+    print(f"|  Grade: " + grade + "      |")
     if percent < 10:
-        print(f"|  {YELLOWB}Percent:{RESET} " + str(percent) + "%   |")
+        print(f"|  Percent: " + str(percent) + "%   |")
     else:
-        print(f"|  {YELLOWB}Percent:{RESET} " + str(percent) + "%  |")
+        print(f"|  Percent: " + str(percent) + "%  |")
     print("|________________|")
 
 def calculate_grade():
     global percent
     global grade
     if percent == 100:
-        grade = "S"
+        grade = RED + BOLD + "S" + RESET
     elif percent >= 90:
-        grade = "A"
+        grade = ORANGE + BOLD + "A" + RESET
     elif percent >= 80:
-        grade = "B"
+        grade = YELLOW + BOLD + "B" + RESET
     elif percent >= 70:
-        grade = "C"
+        grade = GREEN + BOLD + "C" + RESET
     elif percent >= 60:
-        grade = "D"
+        grade = BLUE + BOLD + "D" + RESET
     else:
-        grade = "F"
+        grade = MAGENTA + BOLD + "F" + RESET
 
 def change_settings():
     global auto_map
     while True:
         print(" _________________________________ ")
-        print(f"|            {MAGENTA}{BOLD}Settings{RESET}             |")
+        print(f"|            {YELLOWB}Settings{RESET}             |")
         print(f"| {GREENB}1.{RESET} Toggle auto-map              |")
         print("|    (Automatically shows the map |")
         print("|     after every move)           |")
@@ -245,35 +246,38 @@ def change_settings():
 
 def start_game():
     welcome_message()
-    print("You are a lone Troy Student, fighting to secure good grades and making your Asian parents proud.")
-    print("Your objective it to make it across the school, visitng as many classes as possible to get the best grades.")
-    print("When you are done, go to the office and show the principal your grades.")
-    print("Commands: " + str(commands) + '\n')
-    time.sleep(1)
-    print("You stand in front of the North Gym gate.")
-    print("You have a map of the school")
+    print(f"{WHITEB}You are a lone Troy Student, fighting to secure good grades and making your Asian parents proud.\n{RESET}")
+    input(f"Press {GREENB}enter{RESET} to advance.\n")
+    print(f"{WHITEB}Your objective it to make it across the school, visiting as many classes as possible to get the best grades.{RESET}")
+    input()
+    print(f"{WHITEB}When you are done, go to the office and show the principal your grades.{RESET}")
+    input()
+    print("Commands: " + GREENB +str(commands) + RESET + '\n')
+    input()
+    print(f"{BOLD}You stand in front of the North Gym gate.")
+    print(f"You have a map of the school{RESET}")
     show_map()
     print(f"Go {GREENB}west{RESET} to get in the school and start the game. Type {GREENB}settings{RESET} to change settings.")
     check_command(False, [0, 0], False, False, [0, 0], False, False, [0, 0], False, True, [2, 65], north_gate, False, False)
 
 def north_gate():
-    print("You are in the school, just inside the North Gate.")
+    print(f"{BOLD}You are in the school, just inside the North Gate.{RESET}")
     print(f"You turn and see the North Gym to the {GREENB}south{RESET}. You can also continue {GREENB}west{RESET} to the quad.")
     check_command(False, [0, 0], None, False, [0, 0], None, True, [4, 66], inside_north_gym, True, [6, 50], east_quad, False, False)
 
 def inside_north_gym():
     global basketball_taken
-    print("You are inside the North Gym.")
+    print(f"{BOLD}You are inside the North Gym.{RESET}")
     for room in rooms:
         if player_location == room["coordinates"]:
             basketball_taken = room["variable"]
     if basketball_taken == 0:
-        print("There is a basketball lying there.")
+        print(f"{BOLD}There is a basketball lying there.{RESET}")
         print(f"You can {GREENB}grab{RESET} it or go back outside {GREENB}north{RESET}.")
         check_command(True, [2, 65], north_gate, False, [0, 0], None, False, [0, 0], None, False, [0, 0], None, False, True)
     else:
         print(f"You can go back outside {GREENB}north{RESET}.")
-        check_command(True, [2, 65], north_gate, False, [0, 0], None, False, [0, 0], None, False, [0, 0], None, False, True)
+        check_command(True, [2, 79], north_gate, False, [0, 0], None, False, [0, 0], None, False, [0, 0], None, False, True)
 
 def east_quad():
     print("You are in the East Quad.")
@@ -293,17 +297,17 @@ def end_game():
     global percent
     print("You show the principal your grades.")
     calculate_grade()
-    if grade == "S":
+    if "S" in grade:
         s_ending()
-    elif grade == "A":
+    elif "A" in grade:
         a_ending()
-    elif grade == "B":
+    elif "B" in grade:
         b_ending()
-    elif grade == "C":
+    elif "C" in grade:
         c_ending()
-    elif grade == "D":
+    elif "D" in grade:
         d_ending()
-    elif grade == "F":
+    elif "F" in grade:
         f_ending()
 
 def s_ending():
