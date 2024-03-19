@@ -14,6 +14,7 @@ WHITE = "\033[37m"
 CYAN = "\033[36m"
 BOLD = "\033[1m"
 RESET = "\033[0m"
+GREENB = GREEN + BOLD
 
 # Variables
 grade = "F"
@@ -66,18 +67,18 @@ def show_map():
     for i, line in enumerate(game_map):
         for j, char in enumerate(line):
             if char == 'P' and not player_printed and [i, j] == player_location:
-                print(f"{RED}{char}{RESET}", end="") # Player Icon Color
+                print(f"{RED}{BOLD}{char}{RESET}", end="") # Player Icon Color
                 player_printed = True
             elif re.match(r'[a-zA-Z0-9 ]', char):
                 print(f"{CYAN}{BOLD}{char}{RESET}", end="") # Map Locations Color
             elif re.match(r'[_|]', char):
-                print(f"{BLUE}{char}{RESET}", end="") # Map Borders Color
+                print(f"{YELLOW}{BOLD}{char}{RESET}", end="") # Map Borders Color
             else:
                 print(char, end="")
         print()
 
 def welcome_message():
-    print(f"{BLUE} _    _      _                            _          _____         _      ___      _                 _                  _ ")
+    print(f"{CYAN}{BOLD} _    _      _                            _          _____         _      ___      _                 _                  _ ")
     print(f"| |  | |    | |                          | |        |_   _|       | |    / _ \    | |               | |                | |")
     print(f"| |  | | ___| | ___ ___  _ __ ___   ___  | |_ ___     | | _____  _| |_  / /_\ \ __| |_   _____ _ __ | |_ _   _ _ __ ___| |")
     print(f"| |/\| |/ _ \ |/ __/ _ \| '_ ` _ \ / _ \ | __/ _ \    | |/ _ \ \/ / __| |  _  |/ _` \ \ / / _ \ '_ \| __| | | | '__/ _ \ |")
@@ -178,7 +179,7 @@ def check_command(north, north_location, north_function, east, east_location, ea
 def show_inventory():
     total_width = 20
     print(" ____________________ ")
-    print(f"|     {MAGENTA}Inventory{RESET}      |")
+    print(f"|     {MAGENTA}{BOLD}Inventory{RESET}      |")
     print("|--------------------|")
     for item in inventory:
         word_width = total_width - len(item)
@@ -192,13 +193,13 @@ def show_stats():
     global percent
     calculate_grade()
     print(" ________________ ")
-    print(f"|     {MAGENTA}Grades{RESET}     |")
+    print(f"|     {MAGENTA}{BOLD}Grades{RESET}     |")
     print("|----------------|")
-    print(f"|  {YELLOW}Grade:{RESET} " + grade + "      |")
+    print(f"|  {YELLOW}{BOLD}Grade:{RESET} " + grade + "      |")
     if percent < 10:
-        print(f"|  {YELLOW}Percent:{RESET} " + str(percent) + "%   |")
+        print(f"|  {YELLOW}{BOLD}Percent:{RESET} " + str(percent) + "%   |")
     else:
-        print(f"|  {YELLOW}Percent:{RESET} " + str(percent) + "%  |")
+        print(f"|  {YELLOW}{BOLD}Percent:{RESET} " + str(percent) + "%  |")
     print("|________________|")
 
 def calculate_grade():
@@ -221,11 +222,11 @@ def change_settings():
     global auto_map
     while True:
         print(" _________________________________ ")
-        print(f"|            {MAGENTA}Settings{RESET}             |")
-        print(f"| {GREEN}1.{RESET} Toggle auto-map              |")
+        print(f"|            {MAGENTA}{BOLD}Settings{RESET}             |")
+        print(f"| {GREENB}1.{RESET} Toggle auto-map              |")
         print("|    (Automatically shows the map |")
         print("|     after every move)           |")
-        print(f"| {GREEN}2.{RESET} Back to game                 |")
+        print(f"| {GREENB}2.{RESET} Back to game                 |")
         print("|_________________________________|")
         setting = input("Choose a setting to change: ")
         if setting == "1":
@@ -251,12 +252,12 @@ def start_game():
     print("You stand in front of the North Gym gate.")
     print("You have a map of the school")
     show_map()
-    print(f"Go {GREEN}west{RESET} to get in the school and start the game. Type {GREEN}settings{RESET} to change settings.")
+    print(f"Go {GREENB}west{RESET} to get in the school and start the game. Type {GREENB}settings{RESET} to change settings.")
     check_command(False, [0, 0], False, False, [0, 0], False, False, [0, 0], False, True, [2, 65], north_gate, False, False)
 
 def north_gate():
     print("You are in the school, just inside the North Gate.")
-    print(f"You turn and see the North Gym to the {GREEN}south{RESET}. You can also continue {GREEN}west{RESET} to the quad.")
+    print(f"You turn and see the North Gym to the {GREENB}south{RESET}. You can also continue {GREENB}west{RESET} to the quad.")
     check_command(False, [0, 0], None, False, [0, 0], None, True, [4, 66], inside_north_gym, True, [6, 50], east_quad, False, False)
 
 def inside_north_gym():
@@ -267,10 +268,10 @@ def inside_north_gym():
             basketball_taken = room["variable"]
     if basketball_taken == 0:
         print("There is a basketball lying there.")
-        print(f"You can {GREEN}grab{RESET} it or go back outside {GREEN}north{RESET}.")
+        print(f"You can {GREENB}grab{RESET} it or go back outside {GREENB}north{RESET}.")
         check_command(True, [2, 79], north_gate, False, [0, 0], None, False, [0, 0], None, False, [0, 0], None, False, True)
     else:
-        print(f"You can go back outside {GREEN}north{RESET}.")
+        print(f"You can go back outside {GREENB}north{RESET}.")
         check_command(True, [2, 79], north_gate, False, [0, 0], None, False, [0, 0], None, False, [0, 0], None, False, True)
 
 def east_quad():
