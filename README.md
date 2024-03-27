@@ -1,11 +1,11 @@
 Text Adventure made with python, by CodeBlueJay (Who did ALL of the work)
 50 thousand lashings to HyunJun who is a FREELOADER and is doing ABSOLUTELY NOTHING
 ```py
-return "Hyubnjun Kimchi is cool"
+return "I dont like hyunjun"
 ```
-Jayden should actually do work fr.
+He should actually do work fr.
 ```python
-print("jayden, it's interesting how you're like a git command - 'git commit' is unknown to you.")
+print("HyunJun, it's interesting how you're like a git command - 'git commit' is unknown to you.")
 print("It seems like the only 'push' you know is pushing off work.")
 print("If only you debugged code as much as you debugged your responsibilities.")
 print("In the world of coding, you're like a semicolon - we forget you're there until something breaks.")
