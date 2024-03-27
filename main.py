@@ -290,68 +290,6 @@ def office():
     print("He wants to see your grades.")
     print(f"You can {GREENB}use{RESET} your progress report or go {GREENB}south{RESET} to the East Quad.")
     check_command(False, [0, 0], None, False, [0, 0], None, True, [6, 50], east_quad, False, [0, 0], None, True, False)
-    end_game()
-
-def end_game():
-    global grade
-    global percent
-	confirmation = input("Are you sure you want to use your progress report? This ends the game! (y/n)")
-    print("You show the principal your grades.")
-    calculate_grade()
-    if "S" in grade:
-        s_ending()
-    elif "A" in grade:
-        a_ending()
-    elif "B" in grade:
-        b_ending()
-    elif "C" in grade:
-        c_ending()
-    elif "D" in grade:
-        d_ending()
-    elif "F" in grade:
-        f_ending()
-
-def s_ending():
-    print("The principal is amazed at your grades.")
-    print("He gives you a scholarship to any college you want.")
-    print("Your Asian parents are proud of you.")
-    print("They say you are just as good as your 5 year old cousin in China.")
-    print(f"Rank: {YELLOWB}Child Prodigy{RESET}")
-
-def a_ending():
-    print("The principal is proud of your grades.")
-    print("He sends you off with a farewell and lots of candy.")
-    print("Your Asian parents accept your grades happily.")
-    print("They will take all A's.")
-    print(f"Rank: {YELLOWB}Smart Kid{RESET}")
-
-def b_ending():
-    print("The principal is happy that you managed acceptable grades.")
-    print("He wishes you farewell and good luck at the gate.")
-    print("Your Asian parents are slightly bothered that you almost had all A's.")
-    print("They tell you that you did sufficient.")
-    print(f"Rank: {YELLOWB}Average Student{RESET}")
-
-def c_ending():
-    print("The principal is relieved that you managed to pass and graduate.")
-    print("He hopes you can study harder and go on to get into college.")
-    print("Your Asian parent's silence says it all.")
-    print("They say at least you passed.")
-    print(f"Rank: {YELLOWB}Lucky Passer{RESET}")
-
-def d_ending():
-    print("The principal is sad that you failed but almost passed.")
-    print("He says to take summer school with confidence that you will do better.")
-    print("Your Asian parent's expressions say it all.")
-    print("They are disappointed in you.")
-    print(f"Rank: {YELLOWB}Close Misser{RESET}")
-
-def f_ending():
-    print("The principal is shocked that you somehow got that low of a grade.")
-    print("He dejectedly hands you a summer school sentence and tells you to study harder.")
-    print("Your Asian parent's silence and expressions fills you with shame.")
-    print("They have no words to describe your failure.")
-    print(f"Rank: {YELLOWB}Scum of the Earth{RESET}")
 
 def west_quad():
     print("You are in the West Quad.")
